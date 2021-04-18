@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>759</width>
+    <height>569</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0" rowspan="2">
+     <widget class="QGroupBox" name="groupBox_fact">
+      <property name="title">
+       <string>Фабрика</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_fact_a">
+         <property name="text">
+          <string>запас продукции</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_fact_a"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_fact_lat">
+         <property name="text">
+          <string>широта</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_fact_lat"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_fact_long">
+         <property name="text">
+          <string>долгота</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEdit_fact_long"/>
+       </item>
+       <item row="3" column="0" alignment="Qt::AlignLeft|Qt::AlignVCenter">
+        <widget class="QPushButton" name="pbn_fact_add">
+         <property name="text">
+          <string>добавить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" alignment="Qt::AlignRight|Qt::AlignVCenter">
+        <widget class="QPushButton" name="pbn_fact_del">
+         <property name="minimumSize">
+          <size>
+           <width>93</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>93</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>удалить</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_factories">
+      <property name="text">
+       <string>Список фабрик</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTableWidget" name="tableWidget_fact"/>
+    </item>
+    <item row="2" column="0" rowspan="2">
+     <widget class="QGroupBox" name="groupBox_shop">
+      <property name="title">
+       <string>Магазин</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_shop_b">
+         <property name="text">
+          <string>потребность магазина</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_title"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_fr2"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_shop_fr2">
+         <property name="text">
+          <string>тариф на перевозку от фабрики 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" alignment="Qt::AlignRight">
+        <widget class="QPushButton" name="pbd_shop_del">
+         <property name="text">
+          <string>удалить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_fr1"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_shop_long">
+         <property name="text">
+          <string>долгота</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_lat"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_shop_lat">
+         <property name="text">
+          <string>широта</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_shop_fr1">
+         <property name="text">
+          <string>тариф на перевозку от фабрики 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_long"/>
+       </item>
+       <item row="6" column="0" alignment="Qt::AlignLeft|Qt::AlignBottom">
+        <widget class="QPushButton" name="pbn_shop_add">
+         <property name="text">
+          <string>добавить</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="lineEdit_shop_b"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_shop_title">
+         <property name="text">
+          <string>название</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_shops">
+      <property name="text">
+       <string>Список магазинов</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QTableWidget" name="tableWidget_shop"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPushButton" name="solve">
+      <property name="text">
+       <string>рассчитатать</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>759</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
