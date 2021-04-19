@@ -25,7 +25,6 @@ public:
 
 public slots:
     void receiveData(QVector<int> supply, QVector<int> demand, QVector< QVector<double> > costs, QVector<QString> title);
-    //QVector<int> supply, QVector<int> demand, QVector< QVector<double> > costs
 
 private slots:
     void on_back_clicked();

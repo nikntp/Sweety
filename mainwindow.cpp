@@ -82,7 +82,6 @@ void MainWindow::on_pbn_fact_add_clicked()
     {
         if (ui->tableWidget_fact->rowCount() < 2)
         {
-            //int row = ui->tableWidget_fact->rowCount();
             ui->tableWidget_fact->insertRow(ui->tableWidget_fact->rowCount());
             ui->tableWidget_fact->setItem(ui->tableWidget_fact->rowCount()-1, 0, new QTableWidgetItem(a));
             ui->tableWidget_fact->setItem(ui->tableWidget_fact->rowCount()-1, 1, new QTableWidgetItem(latitude));
@@ -119,8 +118,6 @@ void MainWindow::on_pbn_shop_add_clicked()
     QString longitude = ui->lineEdit_shop_long->text();
     if (title != "" && is_number(b) && is_number(fr1) && is_number(fr2) && is_number(latitude) && is_number(longitude))
     {
-
-        //int row = ui->tableWidget_fact->rowCount();
         ui->tableWidget_shop->insertRow(ui->tableWidget_shop->rowCount());
         ui->tableWidget_shop->setItem(ui->tableWidget_shop->rowCount()-1, 0, new QTableWidgetItem(title));
         ui->tableWidget_shop->setItem(ui->tableWidget_shop->rowCount()-1, 1, new QTableWidgetItem(b));
@@ -160,12 +157,9 @@ void MainWindow::finished(QNetworkReply * reply)
         reply->deleteLater();
         return;
     }
-    qDebug() << 3;
-
     m_reply = nullptr;
     if (reply->error() != QNetworkReply::NoError){
         qDebug() << reply->errorString();
-        //ui->result->setPlainText(reply->errorString());
         reply->deleteLater();
         return;
     }
@@ -173,11 +167,9 @@ void MainWindow::finished(QNetworkReply * reply)
     const QJsonDocument doc = QJsonDocument::fromJson(content);
     if (!doc.isObject()) {
         qDebug() << "Error while reading the JSON file.";
-        //ui->result->setPlainText(tr("Error while reading the JSON file."));
         reply->deleteLater();
         return;
     }
-    qDebug() << 4;
 
     const QJsonObject obj = doc.object();
     const QJsonArray origins = obj.value("origin_addresses").toArray();
@@ -190,30 +182,17 @@ void MainWindow::finished(QNetworkReply * reply)
         const QString origin = origins.at(i).toString();
         const QJsonArray row = obj.value("rows").toArray().at(i).toObject().value("elements").toArray();
         for (int j = 0; j < destinations.count(); ++j){
-            output  += tr("From: %1\n").arg(origin);
-            output  += tr("to: %1\n").arg(destinations.at(j).toString());
             const QJsonObject data = row.at(j).toObject();
             const QString status = data.value("status").toString();
-            if (status == "OK") {
-                cost[i].push_back(data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_shop->model()->index(j, 2+i).data().toDouble());
-                qDebug() << data.value("distance").toObject().value("value").toDouble()/1000 << " " << data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_fact->model()->index(j, 2+i).data().toDouble();
-                output += tr("Distance: %1\n").arg(data.value("distance").toObject().value("text").toString());
-                output += tr("Duration: %1\n").arg(data.value("duration").toObject().value("text").toString());
-            }else if (status == "NOT_FOUND"){
-                output += tr("Origin and/or distination of thins "
-                             "pairing couldn't be found\n");
-            }else if (status == "ZERO_RESULTS"){
-                output += tr("No route could be");
-            }else {
-                output += tr("Unknow erro\n");
-            }
-            output += QStringLiteral("=").repeated(35) + QStringLiteral("\n");
+
+            cost[i].push_back(data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_shop->model()->index(j, 2+i).data().toDouble());
+            qDebug() << data.value("distance").toObject().value("value").toDouble()/1000 << " " << data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_fact->model()->index(j, 2+i).data().toDouble();
+            output += tr("Distance: %1\n").arg(data.value("distance").toObject().value("text").toString());
+
         }
     }
 
 
-    //
-    //connect(this, SIGNAL(sendData(QVector<int>, QVector<int>, QVector< QVector<double> >)), solution, SLOT(Solution::receiveData(QVector<int>, QVector<int>, QVector< QVector<double> >)));
     for (int i = 0; i < ui->tableWidget_fact->rowCount(); ++i)
         sup.push_back(ui->tableWidget_fact->model()->index(i, 0).data().toDouble());
     for (int i = 0; i < ui->tableWidget_shop->rowCount(); ++i)
@@ -258,11 +237,8 @@ void MainWindow::on_solve_clicked()
         query += (ui->tableWidget_shop->model()->index(i, 4).data().toString() + ", " + ui->tableWidget_shop->model()->index(i, 5).data().toString());
     }
     query += "&units=km&mode=driving&departure_time=now&key=AIzaSyCYQDtdRLCLGheHVnrgORF915KAHTi1R0I";
-    //QUrl url(QStringLiteral("https://maps.googleapis.com/maps/api/distancematrix/json?&origins=50.012167, 36.255586&destinations=49.985850, 36.212499&units=km&mode=driving&departure_time=now&key=AIzaSyCYQDtdRLCLGheHVnrgORF915KAHTi1R0I"));
-    //QUrl url(QStringLiteral("https://maps.googleapis.com/maps/api/distancematrix/json"));
     QUrl url(query);
 
-    //url.setQuery(query);
     Solution *solution = new Solution();
     connect(this, &MainWindow::sendData, solution, &Solution::receiveData);
     connect(this, &MainWindow::solve_clicked, solution, &Solution::close);
