@@ -25,6 +25,7 @@ void PotentialsMethod::calc_differences()
 
 
 
+//вычисление потенциалов строк и столбцов
 void PotentialsMethod::calc_potentials()
 {
     fill(u.begin(), u.end(), std::numeric_limits<double>::quiet_NaN());
@@ -78,7 +79,7 @@ void PotentialsMethod::calc_potentials()
 }
 
 
-
+//проверка решения на оптимальность
 bool PotentialsMethod::is_optimal()
 {
     calc_potentials();
@@ -98,7 +99,7 @@ bool PotentialsMethod::is_optimal()
 }
 
 
-
+//цикл пересчета
 void PotentialsMethod::optimize()
 {
     top = { 0, 0 };
@@ -164,7 +165,7 @@ bool PotentialsMethod::find_cycle()
 }
 
 
-
+//нахождения цикла в строке
 bool PotentialsMethod::find_cycle_row(Point& pos)
 {
     for (Point it{ pos.first, 0 }; it.second < table.n(); ++it.second)
@@ -186,8 +187,7 @@ bool PotentialsMethod::find_cycle_row(Point& pos)
     return false;
 }
 
-
-
+//нахождения цикла а столбце
 bool PotentialsMethod::find_cycle_column(Point& pos)
 {
     for (Point it{ 0, pos.second }; it.first < table.k(); ++it.first)
