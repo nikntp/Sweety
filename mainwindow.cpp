@@ -257,7 +257,7 @@ void MainWindow::on_importCSVFile_clicked()
     {
         data = importedCSV.readAll();
         QString k = "";
-        for (int i = 0; i < data.size()-1; ++i) {if (data[i] != '\"') k+= data[i];}
+        for (int i = 0; i < data.size()-1; ++i) {if (data[i] != '\"' && data[i] != ' ') k+= data[i];}
         if (data[data.size()-1] != '\n') k+=data[data.size()-1];
         data = k;
         rowOfData = data.split("\n");
@@ -271,12 +271,15 @@ void MainWindow::on_importCSVFile_clicked()
             ui->tableWidget_fact->insertRow(ui->tableWidget_fact->rowCount());
             for (int y = 0; y < rowData.size(); y++)
             {
+                if (y == rowData.size()-1) rowData[y].resize(rowData[y].size()-1);
                 ui->tableWidget_fact->setItem(x, y, new QTableWidgetItem(rowData[y]));
             }
         } else {
             ui->tableWidget_shop->insertRow(ui->tableWidget_shop->rowCount());
             for (int y = 0; y < rowData.size(); y++)
             {
+                if (y == rowData.size()-1) rowData[y].resize(rowData[y].size()-1);
+
                 ui->tableWidget_shop->setItem(ui->tableWidget_shop->rowCount()-1, y, new QTableWidgetItem(rowData[y]));
             }
         }
