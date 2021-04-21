@@ -35,8 +35,12 @@ private slots:
 
     //void receiveData(int s);
 
+    void on_importCSVFile_clicked();
+
+    void on_pushSelectDir_clicked();
+
 signals:
-    void sendData(QVector<int> supply, QVector<int> demand, QVector< QVector<double> > costs, QVector<QString> title);
+    void sendData(QVector<double> supply, QVector<double> demand, QVector< QVector<double> > costs, QVector<QString> title);
 
     void solve_clicked();
 
@@ -44,5 +48,6 @@ private:
     Ui::MainWindow *ui;
     QNetworkAccessManager *m_network_manager;
     QNetworkReply *m_reply;
+    QString dir_name;
 };
 #endif // MAINWINDOW_H

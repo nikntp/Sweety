@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "solution.h"
+#include "secondwindow.h"
 #include "ui_mainwindow.h"
 #include <QUrlQuery>
 #include <QUrl>
@@ -9,6 +9,9 @@
 #include <QNetworkReply>
 #include <QDebug>
 #include <QMessageBox>
+#include <QFile>
+#include <QStandardItemModel>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -147,7 +150,7 @@ void MainWindow::on_pbd_shop_del_clicked()
 }
 
 QVector<QString> t;
-QVector<int> dem, sup;
+QVector<double> dem, sup;
 QVector<QVector<double>> cost;
 int cnt = 0;
 
@@ -239,15 +242,104 @@ void MainWindow::on_solve_clicked()
     query += "&units=km&mode=driving&departure_time=now&key=AIzaSyCYQDtdRLCLGheHVnrgORF915KAHTi1R0I";
     QUrl url(query);
 
-    Solution *solution = new Solution();
-    connect(this, &MainWindow::sendData, solution, &Solution::receiveData);
-    connect(this, &MainWindow::solve_clicked, solution, &Solution::close);
+    SecondWindow *optimize = new SecondWindow();
+    connect(this, &MainWindow::sendData, optimize, &SecondWindow::receiveData);
+    connect(this, &MainWindow::solve_clicked, optimize, &SecondWindow::close);
 
     m_reply = m_network_manager->get(QNetworkRequest(url));
     qDebug() << query;
 
-    solution->show();
-    solution->exec();
+    optimize->show();
+    optimize->exec();
+}
+
+void MainWindow::on_importCSVFile_clicked()
+{
+    /*QFile file(dir_name);
+    QStringList listA;
+    int row1 = 0, row2 = 0;
+    if (file.open(QIODevice::ReadOnly)){
+        while (!file.atEnd()){
+            cnt = 0;
+            QString line = file.readLine();
+            listA = line.split(";");
+
+            if (cnt < 2){
+                ui->tableWidget_fact->setColumnCount(listA.size());
+                ui->tableWidget_fact->insertRow(row1);
+                for (int x = 0; x < listA.size(); x++){
+                    QTableWidgetItem *test = new QTableWidgetItem(listA.at(x));
+                    ui->tableWidget_fact->setItem(row1, x, test);
+                }
+                row1++;
+
+            }
+            else {
+                ui->tableWidget_shop->setColumnCount(listA.size());
+                ui->tableWidget_shop->insertRow(row2);
+                for (int x = 2; x < listA.size(); x++){
+                    QTableWidgetItem *test = new QTableWidgetItem(listA.at(x));
+                    ui->tableWidget_shop->setItem(row2, x, test);
+                }
+                row2++;
+            }
+            cnt++;
+            }
+
+        }
+    QStringList loadCsv;*/
+
+    using namespace std;
+
+    QString data;
+    QFile importedCSV(dir_name);
+    QStringList rowOfData;
+    QStringList rowData;
+    int tempint = 0;
+    data.clear();
+    rowOfData.clear();
+    rowData.clear();
+
+    //QStringList l = data.split(QRegularExpression("\""), Qt::SkipEmptyParts);
+    if (importedCSV.open(QFile::ReadOnly))
+    {
+        data = importedCSV.readAll();
+        QString k = "";
+        for (int i = 0; i < data.size()-1; ++i) {if (data[i] != '\"') k+= data[i];}
+        if (data[data.size()-1] != '\n') k+=data[data.size()-1];
+        data = k;
+        rowOfData = data.split("\n");
+        importedCSV.close();
+    }
+    qDebug()<<data;
+    for (int x = 0; x < rowOfData.size(); x++)
+    {
+        int cnt = 0;
+        rowData = rowOfData.at(x).split(";");
+        if (ui->tableWidget_fact->rowCount()<2){
+            ui->tableWidget_fact->insertRow(ui->tableWidget_fact->rowCount());
+            for (int y = 0; y < rowData.size(); y++)
+            {
+                ui->tableWidget_fact->setItem(x, y, new QTableWidgetItem(rowData[y]));
+            }
+        } else {
+            ui->tableWidget_shop->insertRow(ui->tableWidget_shop->rowCount());
+            for (int y = 0; y < rowData.size(); y++)
+            {
+                ui->tableWidget_shop->setItem(ui->tableWidget_shop->rowCount()-1, y, new QTableWidgetItem(rowData[y]));
+            }
+        }
+        ++cnt;
+    }
+    qDebug() << 1;
+
+
 }
 
 
+void MainWindow::on_pushSelectDir_clicked()
+{
+    QFileDialog directory;
+    ui->lineEditDir->setText(directory.getOpenFileName(this,"Choose an directory"));
+    dir_name = ui->lineEditDir->text();
+}

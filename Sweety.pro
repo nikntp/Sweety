@@ -12,15 +12,23 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    solution.cpp
+    matrix_impl.cpp \
+    northwest_corner_method.cpp \
+    potentials_method.cpp \
+    secondwindow.cpp \
+    vector_impl.cpp
 
 HEADERS += \
     mainwindow.h \
-    solution.h
+    matrix_impl.h \
+    northwest_corner_method.h \
+    potentials_method.h \
+    secondwindow.h \
+    vector_impl.h
 
 FORMS += \
     mainwindow.ui \
-    solution.ui
+    secondwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
