@@ -19,7 +19,30 @@ SecondWindow::SecondWindow(QWidget *parent) :
 
 void SecondWindow::receiveData(QVector<double> sup, QVector<double> dem, QVector< QVector<double> > cost, QVector<QString> title)
 {
+    {
+        Vector suppliers = { 74, 36 };
+        Vector consumers = { 20, 45, 30 };
+        Matrix costs = {
+            { 7, 3, 6 },
+            { 4, 8, 2 },
+        };
 
+        cout << "Northwest corner method test" << endl;
+        auto solution = TableNCM(costs, suppliers, consumers);
+        cout << "Plan:" << endl << solution.plan << endl;
+        cout << "Cost of the plan = " << solution.f() << endl;
+        cout << endl << endl;
+
+        cout << "Potentials method test" << endl;
+        auto optimizer = PotentialsMethod(solution);
+        while (!optimizer.is_optimal())
+        {
+            optimizer.optimize();
+        }
+        cout << "Plan:" << endl << optimizer.table.plan << endl;
+        cout << "Cost of the plan = " << optimizer.table.f() << endl;
+
+    }
     Vector suppliers = {}; for (auto a : sup) suppliers.push_back(a);
     Vector consumers = {}; for (auto b : dem) consumers.push_back(b);
     Matrix costs(suppliers.size(), consumers.size());
@@ -58,6 +81,8 @@ void SecondWindow::receiveData(QVector<double> sup, QVector<double> dem, QVector
         ui->tableWidget_result->setItem(ui->tableWidget_result->rowCount()-1, 2, new QTableWidgetItem(QString::number(round((x1*cost[0][j]+x2*cost[1][j])*100)/100)));
     }
     ui->label_result->setText("минимальная стоимость доставки - " + QString::number(z));
+    cout << "Plan:" << endl << optimizer.table.plan << endl;
+
 }
 
 
@@ -98,10 +123,10 @@ void SecondWindow::on_pushExportCSV_clicked()
         {
             strList.clear();
             for( int c = 0; c < ui->tableWidget_result->columnCount(); ++c )
-            {   QTableWidgetItem* item = ui->tableWidget_result->item(r,c);        //Load items
-                if (!item || item->text().isEmpty())                        //Test if there is something at item(r,c)
+            {   QTableWidgetItem* item = ui->tableWidget_result->item(r,c);
+                if (!item || item->text().isEmpty())
                 {
-                    ui->tableWidget_result->setItem(r,c,new QTableWidgetItem("0"));//IF there is nothing write 0
+                    ui->tableWidget_result->setItem(r,c,new QTableWidgetItem("0"));
                 }
                 strList << "\" "+ui->tableWidget_result->item( r, c )->text()+"\" ";
 

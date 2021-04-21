@@ -22,9 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     creatTableWidgets();
     m_network_manager = new QNetworkAccessManager(this);
     connect(m_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(finished(QNetworkReply*)));
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -178,7 +175,6 @@ void MainWindow::finished(QNetworkReply * reply)
     const QJsonArray origins = obj.value("origin_addresses").toArray();
     const QJsonArray destinations = obj.value("destination_addresses").toArray();
     QString output;
-    qDebug() << origins.count() << destinations.count();
     for (int i = 0; i < origins.count(); ++i){
         QVector<double> c;
         cost.push_back(c);
@@ -189,12 +185,10 @@ void MainWindow::finished(QNetworkReply * reply)
             const QString status = data.value("status").toString();
 
             cost[i].push_back(data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_shop->model()->index(j, 2+i).data().toDouble());
-            qDebug() << data.value("distance").toObject().value("value").toDouble()/1000 << " " << data.value("distance").toObject().value("value").toDouble()/1000.0 * ui->tableWidget_fact->model()->index(j, 2+i).data().toDouble();
             output += tr("Distance: %1\n").arg(data.value("distance").toObject().value("text").toString());
 
         }
     }
-
 
     for (int i = 0; i < ui->tableWidget_fact->rowCount(); ++i)
         sup.push_back(ui->tableWidget_fact->model()->index(i, 0).data().toDouble());
@@ -203,16 +197,11 @@ void MainWindow::finished(QNetworkReply * reply)
     for (int i = 0; i < ui->tableWidget_shop->rowCount(); ++i)
         t.push_back(ui->tableWidget_shop->model()->index(i, 0).data().toString());
     emit sendData(sup, dem, cost, t);
-    qDebug() << 5;
-    qDebug() << output;
     reply->deleteLater();
 }
 
 void MainWindow::on_solve_clicked()
 {
-    /*if (m_reply != nullptr) {
-        m_reply->abort();
-    }*/
     if (ui->tableWidget_fact->rowCount()!=2) { QMessageBox::warning(this, "Ошибка", "Требуемое число фабрик - 2"); return; }
 
     double supply_sum = 0, demand_sum = 0;
@@ -226,7 +215,6 @@ void MainWindow::on_solve_clicked()
     cost.clear();
     sup.clear();
     dem.clear();
-    qDebug() << 1;
 
     QString query = "https://maps.googleapis.com/maps/api/distancematrix/json?";
     query += "&origins=";
@@ -247,7 +235,6 @@ void MainWindow::on_solve_clicked()
     connect(this, &MainWindow::solve_clicked, optimize, &SecondWindow::close);
 
     m_reply = m_network_manager->get(QNetworkRequest(url));
-    qDebug() << query;
 
     optimize->show();
     optimize->exec();
@@ -255,40 +242,6 @@ void MainWindow::on_solve_clicked()
 
 void MainWindow::on_importCSVFile_clicked()
 {
-    /*QFile file(dir_name);
-    QStringList listA;
-    int row1 = 0, row2 = 0;
-    if (file.open(QIODevice::ReadOnly)){
-        while (!file.atEnd()){
-            cnt = 0;
-            QString line = file.readLine();
-            listA = line.split(";");
-
-            if (cnt < 2){
-                ui->tableWidget_fact->setColumnCount(listA.size());
-                ui->tableWidget_fact->insertRow(row1);
-                for (int x = 0; x < listA.size(); x++){
-                    QTableWidgetItem *test = new QTableWidgetItem(listA.at(x));
-                    ui->tableWidget_fact->setItem(row1, x, test);
-                }
-                row1++;
-
-            }
-            else {
-                ui->tableWidget_shop->setColumnCount(listA.size());
-                ui->tableWidget_shop->insertRow(row2);
-                for (int x = 2; x < listA.size(); x++){
-                    QTableWidgetItem *test = new QTableWidgetItem(listA.at(x));
-                    ui->tableWidget_shop->setItem(row2, x, test);
-                }
-                row2++;
-            }
-            cnt++;
-            }
-
-        }
-    QStringList loadCsv;*/
-
     using namespace std;
 
     QString data;
@@ -300,7 +253,6 @@ void MainWindow::on_importCSVFile_clicked()
     rowOfData.clear();
     rowData.clear();
 
-    //QStringList l = data.split(QRegularExpression("\""), Qt::SkipEmptyParts);
     if (importedCSV.open(QFile::ReadOnly))
     {
         data = importedCSV.readAll();
@@ -311,7 +263,6 @@ void MainWindow::on_importCSVFile_clicked()
         rowOfData = data.split("\n");
         importedCSV.close();
     }
-    qDebug()<<data;
     for (int x = 0; x < rowOfData.size(); x++)
     {
         int cnt = 0;
@@ -331,9 +282,6 @@ void MainWindow::on_importCSVFile_clicked()
         }
         ++cnt;
     }
-    qDebug() << 1;
-
-
 }
 
 

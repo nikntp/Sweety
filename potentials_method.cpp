@@ -4,13 +4,9 @@
 
 using namespace transportation_problem;
 
-
-
 PotentialsMethod::PotentialsMethod(TableNCM table) : table(table), u(table.k()), v(table.n()), differences(table.k(), table.n())
 {
 }
-
-
 
 void PotentialsMethod::calc_differences()
 {
@@ -35,16 +31,8 @@ void PotentialsMethod::calc_potentials()
 
     while (true)
     {
-        /*auto nan_u = u[0];
-        for (auto x : u)
-            if (std::isnan(x)) nan_u = x;*/
-        /*auto nan_v = v[0];
-        for (auto x : v)
-            if (std::isnan(x)) nan_v = x;*/
         auto nan_u = std::any_of(u.cbegin(), u.cend(), [](auto x) { return isnan(x); });
         auto nan_v = std::any_of(v.cbegin(), v.cend(), [](auto v) { return isnan(v); });
-
-        //auto nan_v = std::any_of(v.cbegin(), v.cend(), std::isnan<double>);
 
         if (!nan_u && !nan_v)
         {
